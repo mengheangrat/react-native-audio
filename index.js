@@ -38,9 +38,7 @@ var AudioRecorder = {
       AudioEncoding: 'ima4',
       OutputFormat: 'mpeg_4',
       MeteringEnabled: false,
-      MeasurementMode: false,
-      AudioEncodingBitRate: 32000,
-      IncludeBase64: false
+      AudioEncodingBitRate: 32000
     };
 
     var recordingOptions = {...defaultOptions, ...options};
@@ -52,9 +50,7 @@ var AudioRecorder = {
         recordingOptions.Channels,
         recordingOptions.AudioQuality,
         recordingOptions.AudioEncoding,
-        recordingOptions.MeteringEnabled,
-        recordingOptions.MeasurementMode,
-        recordingOptions.IncludeBase64
+        recordingOptions.MeteringEnabled
       );
     } else {
       return AudioRecorderManager.prepareRecordingAtPath(path, recordingOptions);
@@ -65,9 +61,6 @@ var AudioRecorder = {
   },
   pauseRecording: function() {
     return AudioRecorderManager.pauseRecording();
-  },
-  resumeRecording: function() {
-    return AudioRecorderManager.resumeRecording();
   },
   stopRecording: function() {
     return AudioRecorderManager.stopRecording();

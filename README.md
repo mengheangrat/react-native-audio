@@ -2,11 +2,8 @@ Record audio in iOS or Android React Native apps.
 
 ## BREAKING CHANGES
 
-For React Native >= 0.47.2, use v3.4.0 and up.
-For React Native >= 0.40, use v3.1.0 up til 3.2.2.
+For React Native >= 0.40, use v3.1.0 and up.
 For React Native <= 0.39, use v3.0.0 or lower.
-
-v4.0 introduced a breaking change to the API to introduce distinct pause and resume methods.
 
 v3.x removed playback support in favor of using more mature libraries like [react-native-sound](https://github.com/zmxv/react-native-sound). If you need to play
 from the network, please submit a PR to that project or try `react-native-video`.
@@ -31,42 +28,6 @@ On *Android* you need to add a permission to `AndroidManifest.xml`:
 
 ```
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
-```
-
-#### Manual Installation on Android
-
-This is not necessary if you have used `react-native link`
-
-Edit `android/settings.gradle` to declare the project directory:
-```
-include ':react-native-audio'
-project(':react-native-audio').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-audio/android')
-```
-
-Edit `android/app/build.gradle` to declare the project dependency:
-```
-dependencies {
-  ...
-  compile project(':react-native-audio')
-}
-```
-
-Edit `android/app/src/main/java/.../MainApplication.java` to register the native module:
-
-```java
-...
-import com.rnim.rn.audio.ReactNativeAudioPackage; // <-- New
-...
-
-public class MainApplication extends Application implements ReactApplication {
-  ...
-  @Override
-  protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-        new MainReactPackage(),
-        new ReactNativeAudioPackage() // <-- New
-    );
-  }
 ```
 
 ### Running the Sample App
@@ -95,8 +56,6 @@ AudioRecorder.prepareRecordingAtPath(audioPath, {
 });
 ```
 
-`AudioQuality` is supported on iOS. `Low`, `Medium`, and `High` will translate to `AVAudioQualityLow`, `AVAudioQualityMedium`, and `AVAudioQualityHigh` respectively.
-
 #### Cross-platform options
 
 ```
@@ -111,24 +70,7 @@ Encodings supported on Android: `aac, aac_eld, amr_nb, amr_wb, he_aac, vorbis`
 
 #### iOS-only fields
 
-Use `MeteringEnabled` boolean to enable audio metering. The following values are available on the recording progress object. 
-
-| Name | Related AVAudioRecorder parameter | Description |
-|------|-----------------------------------|-------------|
-|currentMetering| averagePowerForChannel | The current average power, in decibels, for the sound being recorded. A return value of 0 dB indicates full scale, or maximum power; a return value of -160 dB indicates minimum power (that is, near silence). If the signal provided to the audio recorder exceeds ±full scale, then the return value may exceed 0 (that is, it may enter the positive range).|
-|currentPeakMetering | peakPowerForChannel | The current peak power, in decibels, for the sound being recorded. A return value of 0 dB indicates full scale, or maximum power; a return value of -160 dB indicates minimum power (that is, near silence). If the signal provided to the audio recorder exceeds ±full scale, then the return value may exceed 0 (that is, it may enter the positive range).|
-
-For example: 
-
-```js
-AudioRecorder.onProgress = (data) => {
-    console.log(data.currentMetering, data.currentPeakMetering)
-};
-```
-
-Use the `IncludeBase64` boolean to include the `base64` encoded recording on the `AudioRecorder.onFinished` event object. Please use it with care: passing large amounts of data over the bridge, from native to Javascript, can use lots of memory and cause slow performance.
-
-If you want to upload the audio, it might be best to do it on the native thread with a package like [React Native Fetch Blob](https://github.com/joltup/react-native-fetch-blob).
+The `MeteringEnabled` boolean to enable audio metering.
 
 #### Android-only fields
 
